@@ -8,6 +8,7 @@ import { AlertDialog, AlertDialogAction, AlertDialogContent, AlertDialogDescript
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useOpenAI } from '@/hooks/useOpenAI';
+import { shuffle } from '@/lib/utils';
 
 const allBooks = [
   { title: 'The Elegant Universe', category: 'Physics' }, { title: 'A Brief History of Time', category: 'Physics' },
@@ -48,7 +49,8 @@ const Library = ({ initialCategory = 'All' }) => {
   
   const suggestedBooks = useMemo(() => {
     if (selectedCategory === 'All') return [];
-    return allBooks.filter(book => book.category !== selectedCategory).slice(0, 4);
+    const otherBooks = allBooks.filter(book => book.category !== selectedCategory);
+    return shuffle(otherBooks).slice(0, 4);
   }, [selectedCategory]);
 
   const handleDownload = () => setShowSubscriptionModal(true);
